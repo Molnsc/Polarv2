@@ -1,14 +1,16 @@
--- Get the player
+-- Game: HoodModded
+-- Developer: Stella
+-- Version: 1.0.3
+-- Type: Paid Model
+
 local player = game.Players.LocalPlayer
 
--- Variable to store the logged CFrame
 local loggedCFrame = nil
 
--- Function to set player's health to 0
 local function killSelf()
     local character = player.Character
     if character then
-        -- Get the humanoid
+    
         local humanoid = character:FindFirstChildOfClass("Humanoid")
         
         if humanoid then
@@ -17,33 +19,24 @@ local function killSelf()
     end
 end
 
--- Function to teleport player to a location
 local function teleportTo(cframe)
     player.Character:SetPrimaryPartCFrame(cframe)
 end
 
--- Bind the function to a key press (for example 't')
 game:GetService("UserInputService").InputBegan:Connect(function(input)
-    if input.KeyCode == Enum.KeyCode.K then
-        -- Log current CFrame
+    if input.KeyCode == Enum.KeyCode.T then
+    
         loggedCFrame = player.Character:GetPrimaryPartCFrame()
-        
-        -- Trigger killSelf event
         killSelf()
     end
 end)
 
--- Listen for player respawn
 player.CharacterAdded:Connect(function(character)
-    -- Check if a CFrame was logged
+
     if loggedCFrame then
-        -- Wait for 4 seconds
+  
         wait(3)
-        
-        -- Teleport player back to logged CFrame
         teleportTo(loggedCFrame)
-        
-        -- Reset logged CFrame
         loggedCFrame = nil
     end
 end)
