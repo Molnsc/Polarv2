@@ -24,8 +24,8 @@ local function teleportTo(cframe)
 end
 
 game:GetService("UserInputService").InputBegan:Connect(function(input)
-    if input.KeyCode == Enum.KeyCode.T then
-    
+    if input.KeyCode == Enum.KeyCode.Period then -- Change KeyCode to Period
+        
         loggedCFrame = player.Character:GetPrimaryPartCFrame()
         killSelf()
     end
