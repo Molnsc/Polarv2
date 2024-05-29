@@ -20,7 +20,7 @@ end
 
 
 game:GetService("UserInputService").InputBegan:Connect(function(input)
-    if input.KeyCode == Enum.KeyCode.G then
+    if input.KeyCode == Enum.KeyCode.Comma then
     
   
         killSelf()
