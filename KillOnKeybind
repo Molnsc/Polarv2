@@ -1,0 +1,28 @@
+-- Game: HoodModded
+-- Developer: Stella
+-- Version: 1.0.3
+-- Type: Paid Model
+
+local player = game.Players.LocalPlayer
+
+
+local function killSelf()
+    local character = player.Character
+    if character then
+    
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+        
+        if humanoid then
+            humanoid.Health = 0
+        end
+    end
+end
+
+
+game:GetService("UserInputService").InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.G then
+    
+  
+        killSelf()
+    end
+end)
