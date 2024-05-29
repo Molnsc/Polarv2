@@ -34,11 +34,14 @@ local function updateStrafe()
 end
 
 -- Set the target player (example usage)
-TargetPlr = Players["MMARC0Z"]
+TargetPlr = TargetPlr
 
 -- Create draggable UI
-local ScreenGui = Instance.new("ScreenGui")
+local CoreGui = game:GetService("CoreGui")
+local ScreenGui = Instance.new("ScreenGui", CoreGui)
+ScreenGui.Parent = game.StarterGui
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ResetOnSpawn = false
 
 local Frame = Instance.new("Frame")
 Frame.Parent = ScreenGui
