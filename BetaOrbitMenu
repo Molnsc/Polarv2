@@ -1,0 +1,96 @@
+-- Assuming you have these defined somewhere in your script
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local TargetStrafe = {
+    Enabled = true, 
+    Speed = 40, -- Reduced speed for better circling
+    Radius = 3, -- Radius of the circle
+    Height = 1
+}
+
+local TargetPlr = nil
+local Angle = 0
+
+-- Function to enable/disable strafing
+local function setStrafeEnabled(enabled)
+    TargetStrafe.Enabled = enabled
+end
+
+-- Function to update strafing
+local function updateStrafe()
+    if TargetStrafe.Enabled and TargetPlr then
+        local TargetHRP = TargetPlr.Character and TargetPlr.Character:FindFirstChild("HumanoidRootPart")
+        local LocalHRP = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if TargetHRP and LocalHRP then
+            -- Calculate new CFrame for circling
+            Angle = Angle + math.rad(TargetStrafe.Speed)
+            local offsetX = TargetStrafe.Radius * math.cos(Angle)
+            local offsetZ = TargetStrafe.Radius * math.sin(Angle)
+            local newCFrame = TargetHRP.CFrame * CFrame.new(offsetX, TargetStrafe.Height, offsetZ)
+            LocalHRP.CFrame = newCFrame
+        end
+    end
+end
+
+-- Set the target player (example usage)
+TargetPlr = Players["MMARC0Z"]
+
+-- Create draggable UI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local Frame = Instance.new("Frame")
+Frame.Parent = ScreenGui
+Frame.Size = UDim2.new(0, 200, 0, 150)
+Frame.Position = UDim2.new(0, 100, 0, 100)
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.BackgroundTransparency = 0.5
+
+local TextBox = Instance.new("TextBox")
+TextBox.Parent = Frame
+TextBox.Size = UDim2.new(0, 150, 0, 30)
+TextBox.Position = UDim2.new(0, 25, 0, 10)
+TextBox.PlaceholderText = "Enter Target Player Username"
+
+local SetButton = Instance.new("TextButton")
+SetButton.Parent = Frame
+SetButton.Size = UDim2.new(0, 150, 0, 30)
+SetButton.Position = UDim2.new(0, 25, 0, 50)
+SetButton.Text = "Set Target Player"
+SetButton.MouseButton1Click:Connect(function()
+    local newTargetUsername = TextBox.Text
+    -- Check if a player with the given username exists
+    local targetPlayer = game.Players:FindFirstChild(newTargetUsername)
+    if targetPlayer then
+        -- Set the new target player
+        TargetPlr = targetPlayer
+        print("Target player set to: " .. newTargetUsername)
+    else
+        print("Player not found: " .. newTargetUsername)
+    end
+end)
+
+local StartButton = Instance.new("TextButton")
+StartButton.Parent = Frame
+StartButton.Size = UDim2.new(0, 150, 0, 30)
+StartButton.Position = UDim2.new(0, 25, 0, 90)
+StartButton.Text = "Start Strafe"
+StartButton.MouseButton1Click:Connect(function()
+    setStrafeEnabled(true)
+end)
+
+local StopButton = Instance.new("TextButton")
+StopButton.Parent = Frame
+StopButton.Size = UDim2.new(0, 150, 0, 30)
+StopButton.Position = UDim2.new(0, 25, 0, 130)
+StopButton.Text = "Stop Strafe"
+StopButton.MouseButton1Click:Connect(function()
+    setStrafeEnabled(false)
+end)
+
+-- Call updateStrafe in a loop, you can use RunService or BindToRenderStep for better performance
+while true do
+    updateStrafe()
+    wait() -- You might want to adjust the frequency of the updates depending on your needs
+end
