@@ -72,6 +72,12 @@ end)
 rs:NewSlider("CFrame Speed ", "SliderInfo", 20, 0, function(s) -- 500 (MaxValue) | 0 (MinValue)
     getgenv().Multiplier = s
 end)
+rs:NewButton("Reach", "ButtonInfo", function()
+		if player.Character:FindFirstChildWhichIsA('Tool') then
+            player.Character:FindFirstChildWhichIsA('Tool').Handle.Size = Vector3.new(50,50,50)
+        	player.Character:FindFirstChildWhichIsA('Tool').Handle.Transparency = 1
+    print("Clicked")
+end)
 rs:NewKeybind("Toggle UI", "KeybindInfo", Enum.KeyCode.V, function()
 	Library.ToggleUI()
 end)
